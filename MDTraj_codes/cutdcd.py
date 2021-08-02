@@ -1,3 +1,5 @@
 import mdtraj as md
-t = md.load('positions.dcd', top='water_Na.psf')
-t[0:4200].save_dcd('firstframes.dcd')
+
+t = md.load('traj.dcd', top='psffiles.psf')
+reqframes = int(4200)
+t[0:reqframes].save_dcd('firstframes.dcd')
