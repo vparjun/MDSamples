@@ -6,8 +6,12 @@ Walter Chapman, PhD
 Dilip Asthagiri, PhD
 
 
-## Github maintained by:
+## GitHub maintained by:
 
 Arjun Valiya Parambathu
 
 Thiago Pinheiro dos Santos
+
+## Description
+
+This repository contains the commonly used Molecular Dynamics codes and tools for analysis.
