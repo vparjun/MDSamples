@@ -1,0 +1,22 @@
+*
+
+BONDS
+
+HS   HS      0.000     1.6323  ! SPCE HS-HS distance
+OS   HS    450.000     1.0000  ! SPCE OS-HS distance is different
+
+
+ANGLES
+HS   OS   HS     55.000   109.4000 ! SPCE uses tetrahedral
+
+NONBONDED nbxmod  5 atom cdiel shift vatom vdistance vswitch -
+cutnb 14.0 ctofnb 12.0 ctonnb 10.0 eps 1.0 e14fac 1.0 wmin 1.5
+
+OS     0.000000  -0.155394     1.776600   ! SPCE Oxygen
+HS     0.000000   0.000000     0.000000   ! SPCE hydrogen has no sigma
+Na     0.000000  -0.15531      1.2541     ! Netz Sodium parameters
+K      0.000000  -0.15531      1.6245     ! Netz Potassium parameters
+F      0.000000  -0.11120      1.9275     ! Netz Fluoride parameters
+Cl     0.000000  -0.09940      2.4663     ! Netz Chloride parameters
+
+END
