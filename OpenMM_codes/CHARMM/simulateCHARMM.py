@@ -5,8 +5,8 @@ from sys import stdout
 import numpy as np
 import datetime
 
+# print simulation start time
 system_time = datetime.datetime.now()
-
 print("\nSystem Time is:", system_time)
 
 platform = Platform.getPlatformByName('CUDA')
@@ -35,8 +35,8 @@ coord.positions = xyz*nanometer
 
 topology.setBox(3.9224*nanometer,3.9224*nanometer, 3.9224*nanometer)
 
-#build a simulation system from topology and force field
-
+# build a simulation system from topology and force field
+# SPCE water is rigid water
 system = topology.createSystem(parameters,
     nonbondedMethod=PME,
     nonbondedCutoff=1.2*nanometer,
@@ -52,7 +52,7 @@ barostat = MonteCarloBarostat(1*bar,298.15*kelvin,50)
 system.addForce(barostat)
 
 nsteps = 1000000
-# Create simulation object
+# create simulation object
 simulation = Simulation(topology.topology, system, integrator, platform, properties)
 
 # save trajectories every 100 steps
@@ -65,5 +65,10 @@ simulation.reporters.append(StateDataReporter(stdout, 100, step=True, totalEnerg
 # setting initial positions
 simulation.context.setPositions(coord.positions)
 
+# running simulation
 simulation.step(nsteps)
+
+# print simulation end time
+system_time = datetime.datetime.now()
+print("\nSystem Time is:", system_time)
 
