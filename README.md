@@ -1,13 +1,13 @@
 # Rice Statisitical Thermodynamics Group
 
-PIs:
-
+## PIs:
 Walter Chapman, PhD
 
 Dilip Asthagiri, PhD
 
-Github maintained by:
+
+## Github maintained by:
 
 Arjun Valiya Parambathu
 
-Thiago Pinheiro
+Thiago Pinheiro do Santos
