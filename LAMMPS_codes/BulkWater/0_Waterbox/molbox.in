@@ -1,0 +1,28 @@
+#########################################################
+#                                                       #
+# Filename: molbox.in                                   #
+#                                                       #
+# Author: Arjun Valiya Parambathu                       #
+#                                                       #
+# Execute the script through:                           #
+# lmp_exe -in <Filename>                                #
+#                                                       #
+# Replicated single molecule box as NxNxN               #
+#                                                       #
+#########################################################
+
+variable    refname  string  TIP4P2005	    # Name
+variable    ffname   string  TIP4P2005_AVP   # Forcefield Name
+variable    numreplx equal   8		        # Replicate the box as NxNxN
+variable    numreply equal   8		        # Replicate the box as NxNxN
+variable    numreplz equal   8		        # Replicate the box as NxNxN
+
+units 		real
+atom_style 	full
+read_data 	${refname}.single.data
+include 	${ffname}.ff.lmp
+
+unfix		RigidOHBonds
+replicate 	${numreplx} ${numreply} ${numreplz} 
+
+write_data	${refname}.bulk.data nocoeff

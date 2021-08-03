@@ -1,0 +1,111 @@
+#########################################################
+#                                                       #
+# Filename: bulk.in                                     #
+#                                                       #
+# Author: Arjun Valiya Parambathu                       #
+#                                                       #
+# Execute the script through:                           #
+# lmp_exe -in <Filename>                                #
+#                                                       #
+# Run NPT/NVT equlibration for bulk system              #
+#                                                       #
+#########################################################
+
+# Thermodynamic Variables 
+variable        temperature equal 298.15    # Kelvin
+variable        pressure    equal 1.0       # atm
+
+# Simulation Variables
+variable        nptrun      equal 500000	# Steps
+variable        nvtrun      equal 500000	# Steps
+variable        prodrun     equal 500000	# Steps
+variable        eqlsave	    equal 0		    # 1 to save eql trajectories
+variable        prdsave     equal 0         # 1 to save prod trajectories   
+variable        dcdsave	    equal 0		    # 1 to save prod as dcd trajectories
+
+# Some defaults if needed to be changed
+variable        ndump       equal 100	    # Saving trajs frequency
+variable        noutput     equal 100	    # Monitoring outputs frequency		
+variable        neqldump    equal 100       # Saving eql trajs frequency
+
+# File Names associated with the simulation
+variable        dataname    index waterbulk.data
+variable        simname     index waterbulk.sim
+
+# Intialization
+units           real
+dimension       3
+boundary        p p p
+atom_style      full
+neighbor        2.0 bin
+neigh_modify    every 1 delay 0 check yes
+timestep        2.0
+
+# Read the box
+read_data 	    ${dataname} 
+
+# Forcefield
+include         TIP4P2005_AVP.ff.lmp
+
+# Outputs
+thermo_style    custom step temp press density pe ke etotal cpu cpuremain
+thermo          ${noutput}
+
+if "${eqlsave} == 1" then &
+"dump           eqldump all atom ${neqldump} ${simname}.Eql.atom"
+
+# Minimization and Initialization
+###### Minimizing using NVE limit because minimize doesn't work properly with rigid molecules
+velocity        all create ${temperature} 1293 rot yes mom yes dist gaussian
+
+# Necessary for rigid molecules 
+run             0   
+velocity        all scale ${temperature}
+fix             minnvt all nve/limit 0.1
+run             100
+unfix           minnvt
+
+# Equilibrium NPT run
+# Fix Nose-Hoover thermostat, with damping at 100 timesteps
+fix             eqlNPT all npt temp ${temperature} ${temperature} 100.0 iso ${pressure} ${pressure} 1000.0
+fix             removeMomentum all momentum 1 linear 1 1 1
+
+# Run NPT Equilibration
+log             eql.npt.log
+run             ${nptrun}
+
+# Save equilibrated frame
+write_data      eql.npt.data nocoeff
+log             log.lammps append
+
+# Equilibrium NVT run
+# Fix Nose-Hoover thermostat, with damping at 100 timesteps
+unfix           eqlNPT
+fix             eqlNVT all nvt temp ${temperature} ${temperature} 100.0
+
+# Run NPT Equilibration
+log             eql.nvt.log
+run             ${nvtrun}
+
+# Save equilibrated frame
+write_data      eql.nvt.data nocoeff
+log             log.lammps append
+# Production run
+# Fix nve
+unfix           eqlNVT
+unfix           removeMomentum
+fix             prod all nve
+
+# Save production frames
+if "${eqlsave} == 1" then &
+"undump     eqldump"
+if "${prdsave} == 1" then &
+"dump       prddump all atom ${ndump} ${simname}.Prod.atom"
+if "${dcdsave} == 1" then &
+"dump       dcddump all dcd ${ndump} ${simname}.Prod.dcd"
+ 
+# Run equilibration
+log         prod.log
+run         ${prodrun}
+write_data  prod.data nocoeff
+log         log.lammps append
