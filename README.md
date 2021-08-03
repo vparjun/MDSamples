@@ -1,5 +1,9 @@
 # Rice Statisitical Thermodynamics Group
 
-PI: Prof. Walter Chapman
+PIs: 
+Walter Chapman, PhD
+Dilip Asthagiri, PhD
 
-PI: Dr. Dilip Asthagiri
+Github maintained by:
+Arjun Valiya Parambathu
+Thiago Pinheiro
