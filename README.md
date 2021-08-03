@@ -10,4 +10,4 @@ Dilip Asthagiri, PhD
 
 Arjun Valiya Parambathu
 
-Thiago Pinheiro do Santos
+Thiago Pinheiro dos Santos
