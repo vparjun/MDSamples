@@ -1,5 +1,4 @@
 import mdtraj as md
-from mdtraj.core import element
 import numpy as np
 
 topfile='Struct1.psf'
