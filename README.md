@@ -1,16 +1,4 @@
-# Rice Statisitical Thermodynamics Group
-
-## PIs:
-Walter Chapman, PhD
-
-Dilip Asthagiri, PhD
-
-
-## GitHub maintained by:
-
-Arjun Valiya Parambathu
-
-Thiago Pinheiro dos Santos
+# Compute ACF from MD Trajectories
 
 ## Description
 
